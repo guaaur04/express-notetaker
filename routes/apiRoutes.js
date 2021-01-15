@@ -6,7 +6,7 @@ const notes = require("../index.js");
 
 //ROUTING
 
-// API GET Requests
+// API GET Request
 
   module.exports = function(app) {
 
@@ -15,8 +15,14 @@ const notes = require("../index.js");
      });
   }
 
-//API POST Requests
+//API POST Request
 
 app.post("/api/notes", function(req,res) {
-    
-})
+
+});
+
+//API DELETE Request
+app.delete("/api/notes/:id", function(req,res) {
+    res.send("")
+
+});
