@@ -1,6 +1,9 @@
 // DEPENDENCIES
 // Series of npm packages that we will use to give our server useful functionality
-var express = require("express");
+const express = require("express");
+const fs = require("fs");
+const path = require("path"); 
+
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -8,14 +11,16 @@ var express = require("express");
 // ==============================================================================
 
 // Tells node that we are creating an "express" server
-var app = express();
+const app = express();
 
 // Sets port
-var PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public")); 
+
 
 
 // ROUTER
