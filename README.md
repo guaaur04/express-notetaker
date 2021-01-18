@@ -13,7 +13,9 @@ Technologies
 Express.js , Routing, HTTP POST requests, Postman
 
 **Links**
+
 Github: https://github.com/guaaur04/express-notetaker
+
 Deployed application:
 
 **License**
@@ -25,3 +27,18 @@ Deployed application:
 © 2021 
 Auricia V Guardado
 
+==================================================
+
+## Learning Objectives
+
+* Configure an Express.js app to handle GET and POST requests
+
+* Configure an Express.js app to serve static files
+
+* Identify how client-side requests relate to server-side responses
+
+* Parse optional and required parameters when creating server-side routes
+
+* Implement client-side POST requests to submit form data to a server
+
+* Explain and configure middleware to extend the functionality of Express.js
