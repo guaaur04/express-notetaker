@@ -15,18 +15,18 @@ const { response } = require("express");
 
 module.exports = function (app) {
 
-  app.get ('/', function (req, res) {
+  app.get('/', function (req, res) {
     res.sendFile(path.join(_dirname, '/public/index.html'))
   })
 
   app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
-  
+
   })
 
   app.get("api/notes", function (req, res) {
     fs.readFile('db/db.json', 'utf8', (err, data) => {
-      if (err) throw err 
+      if (err) throw err
       res.json(JSON.parse(data))
     })
   })
@@ -38,54 +38,65 @@ module.exports = function (app) {
 
     let notes = [];
 
-    fs.readFile(path.join(_dirname, ".db/db.json"), "utf8", function (err, data) { 
+    fs.readFile(path.join(_dirname, ".db/db.json"), "utf8", function (err, data) {
 
-      if(err) {
+      if (err) {
         console.log("Woops, there's something wrong here...")
-        throw err 
+        throw err
       } else {
 
-      notes(JSON.parse(data))
+        notes(JSON.parse(data))
+      }
+
+      //Give me my notes, computer
+      res.json(notes)
+
+
+      //Each note is to be different
+      let note = notes.length > 0 ? notes[notes.length - 1].id + 1 : 0;
+      notes.push({ id: note, title: req.body.title, text: req.body.text });
+
+      fs.readFile(path.join(_dirname, ".db/db.json"), JSON.stringify(notes), function (err, data) {
+
+        if (err) {
+          console.log("Woops, there's something wrong here...")
+          throw err
+        } else {
+
+          notes(JSON.parse(data))
+        }
+
+        //API DELETE Request
+        //API should recieve a query parameter containing the id of note to delete. 
+        app.delete("/api/notes/:id", function (req, res) {
+          let notes = [];
+
+          fs.readFile(path.join(__dirname, '../db/db.json', 'utf8', function (err, data) {
+            if (err) {
+              throw err
+            } else {
+              notes = JSON.parse(data);
+
+              for (var i in notes) {
+                if (notes[i].id === parseInt(req.params.id)) {
+                  notes.splice(i, 1);
+                }
+              }
+
+              fs.writeFile(path.join(__dirname, '../db/db.json', JSON.stringify(notes), function (err, data) {
+                if (err) {
+                  throw err
+                } else {
+                  res.send(data)
+                }
+              })
+            }
+
+          });
+        };
+
+      }
+    }
   }
 
-  //Give me my notes, computer
-  res.json(notes)
-
-
-  //Each note is to be different
-  let note = notes.length > 0 ? notes[notes.length -1].id + 1 : 0;
-  notes.push( {id: note, title: req.body.title, text : req.body.text });    
-
-  fs.readFile(path.join(_dirname, ".db/db.json"), JSON.stringify(notes), function (err, data) { 
-
-    if(err) {
-      console.log("Woops, there's something wrong here...")
-      throw err 
-    } else {
-
-    notes(JSON.parse(data))
 }
-
-  //API DELETE Request
-  //API should recieve a query parameter containing the id of note to delete. 
-  app.delete("/api/notes/:id", function (req, res) {
-    const notesId = req.params.id;
-    const notesIndex = db.findIndex(note => note.id === noteID);
-    const deletedNote = db.splice(index, 1);
-
-    fs.writeFileSync(path.join(__dirname, '../db/db.json'), JSON.stringify(db), err => {
-      if (err) throw err
-
-    });
-
-    // app.db('notes').remove({
-    //   id: id
-    // });
-
-    // return res.status(201).end();
-
-    res.json(deletedNote);
-
-  });
-
-};
