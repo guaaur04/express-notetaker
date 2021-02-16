@@ -7,6 +7,7 @@ const path = require("path")
 const router = express.Router()
 const db = require("../db/db.json");
 const uuidv4 = require('uuid');
+const { response } = require("express");
 // uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 //ROUTING
 
@@ -33,8 +34,30 @@ module.exports = function (app) {
 
   //API POST Request
   //Should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
-  app.post("/api/notes", function (req, res) {
-    let newNote = {
+  app.post("/api/notes", function (req, res) => {
+    fs.readFile(path.join(_dirname, ".db/db.json"), "utf8", function(err, data){
+      if(err){
+        console.log(err)
+      }
+      res.json(JSON.parse(data))
+    })
+
+    let note =JSON.parse(data)
+    note.push(request.bdoy)
+    for (let i=0; i < note.length; i++){
+      note[i].id = i 
+    }
+
+    fs.writeFile(path.join(_dirname, "..db/db.json"), JSON.stringify(notes), function(err){
+      if (err) throw err
+      response.json(req.body)
+    })
+
+  })
+
+})
+    
+    {
       id: uuid(),
       title: req.body.title,
       text: req.body.text
