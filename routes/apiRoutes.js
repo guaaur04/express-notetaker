@@ -14,16 +14,21 @@ const uuidv4 = require('uuid');
 
 module.exports = function (app) {
 
-  app.get("api/notes", function (req, res) {
-    // fs.readfile(path.join(__dirname, "/db/db.json"));
-    //    if(err) {
-    //      throw err
-    //    }
+  app.get ('/', function (req, res) {
+    res.sendFile(path.join(_dirname, '/public/index.html'))
+  })
 
-    //    else {
-    //      const parseData =JSON.parse(data)
-    res.send(db);
-  });
+  app.get("/notes", (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/notes.html'))
+  
+  })
+
+  app.get("api/notes", function (req, res) {
+    fs.readFile('db/db.json', 'utf8', (err, data) => {
+      if (err) throw err 
+      res.json(JSON.parse(data))
+    })
+  })
 
 
   //API POST Request
