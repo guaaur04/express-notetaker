@@ -34,46 +34,37 @@ module.exports = function (app) {
 
   //API POST Request
   //Should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
-  app.post("/api/notes", function (req, res) => {
-    fs.readFile(path.join(_dirname, ".db/db.json"), "utf8", function(err, data){
-      if(err){
-        console.log(err)
-      }
-      res.json(JSON.parse(data))
-    })
+  app.post("/api/notes", function (req, res) {
 
-    let note =JSON.parse(data)
-    note.push(request.bdoy)
-    for (let i=0; i < note.length; i++){
-      note[i].id = i 
-    }
+    let notes = [];
 
-    fs.writeFile(path.join(_dirname, "..db/db.json"), JSON.stringify(notes), function(err){
-      if (err) throw err
-      response.json(req.body)
-    })
+    fs.readFile(path.join(_dirname, ".db/db.json"), "utf8", function (err, data) { 
 
-  })
+      if(err) {
+        console.log("Woops, there's something wrong here...")
+        throw err 
+      } else {
 
-})
-    
-    {
-      id: uuid(),
-      title: req.body.title,
-      text: req.body.text
-    };
+      notes(JSON.parse(data))
+  }
 
-    db.push(newNOte);
+  //Give me my notes, computer
+  res.json(notes)
 
-    fs.writeFileSync(path.join(__dirname, '../db/db.json'), 
-    JSON.stringify(db), err => {
-      if (err) throw err
-    });
 
-    res.json(newNote);
+  //Each note is to be different
+  let note = notes.length > 0 ? notes[notes.length -1].id + 1 : 0;
+  notes.push( {id: note, title: req.body.title, text : req.body.text });    
 
-  });
+  fs.readFile(path.join(_dirname, ".db/db.json"), JSON.stringify(notes), function (err, data) { 
 
+    if(err) {
+      console.log("Woops, there's something wrong here...")
+      throw err 
+    } else {
+
+    notes(JSON.parse(data))
+}
 
   //API DELETE Request
   //API should recieve a query parameter containing the id of note to delete. 
