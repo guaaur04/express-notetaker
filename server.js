@@ -1,7 +1,7 @@
 // DEPENDENCIES
 // Series of npm packages that we will use to give our server useful functionality
 const express = require("express");
-const fs = require("fs");
+// const fs = require("fs");
 const path = require("path"); 
 
 
@@ -20,8 +20,6 @@ const PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public")); 
-
-
 
 // ROUTER
 require("./routes/apiRoutes")(app);
