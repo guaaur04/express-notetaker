@@ -46,11 +46,9 @@ module.exports = function (app) {
       //Give me my notes, computer
       res.json(notes)
 
-    });
-
 
       //Each note is to be different
-     let noteId = notes.length > 0 ? notes[notes.length - 1].id + 1 : 0;
+      let noteId = notes.length > 0 ? notes[notes.length - 1].id + 1 : 0;
       notes.push({ id: noteId, title: req.body.title, text: req.body.text });
 
       fs.readFile(path.join(_dirname, ".db/db.json"), JSON.stringify(notes), function (err, data) {
@@ -60,41 +58,38 @@ module.exports = function (app) {
           throw err
         } else {
 
-         res.json(data);
+          res.json(data);
         }
-      
       })
-
-      });
     });
-  
+  });
 
-    //API DELETE Request
-    //API should recieve a query parameter containing the id of note to delete. 
-    app.delete("/api/notes/:id", function (req, res) {
-      let notes = [];
+  //API DELETE Request
+  //API should recieve a query parameter containing the id of note to delete. 
+  app.delete("/api/notes/:id", function (req, res) {
+    let notes = [];
 
-      fs.readFile(path.join(__dirname, '../db/db.json', 'utf8', function (err, data) {
-        if (err) {
-          throw err
-        } else {
-          notes = JSON.parse(data);
+    fs.readFile(path.join(__dirname, '../db/db.json', 'utf8', function (err, data) {
+      if (err) {
+        throw err
+      } else {
+        notes = JSON.parse(data);
+
+        for (var i in notes) {
+          if (notes[i].id === parseInt(req.params.id)) {
+            notes.splice(i, 1);
+          }
         }
 
-          for (var i in notes) {
-            if (notes[i].id === parseInt(req.params.id)) {
-              notes.splice(i, 1);
-            }
+        fs.writeFile(path.join(__dirname, '../db/db.json', JSON.stringify(notes), function (err, data) {
+          if (err) {
+            throw err
+          } else {
+            res.send(data)
           }
-      }));
-
-      fs.writeFile(path.join(__dirname, '../db/db.json', JSON.stringify(notes), function (err, data) {
-            if (err) {
-              throw err
-            } else {
-              res.send(data)
-            }
-      }));
-    });
+        }))
+    }
+    }))
+  });
 
 };
