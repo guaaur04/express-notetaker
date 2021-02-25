@@ -16,7 +16,7 @@ const path = require("path");
 module.exports = function (app) {
 
   app.get("/api/notes", (req, res) => {
-    fs.readFile("db/db.json",  function (err, data) {
+    fs.readFile("db/db.json", function (err, data) {
       if (err) throw err;
       var newNoteId = 1;
       const dataId = JSON.parse(data);
@@ -32,20 +32,21 @@ module.exports = function (app) {
   });
 
 
-  
+
   //POST
 
   app.post("/api/notes", (req, res) => {
-    fs.readFile(path.join(__dirname, '/db/db.json', function (err, data) {
-      if(err) throw err;
-      const newNote =JSON.parse(data);
+    fs.readFile("db/db.json", function (err, data) {
+      if (err) throw err;
+      const newNote = JSON.parse(data);
       newNote.push(req.body);
-      fs.writeFile('../db.json', JSON.stringify(newNote), function (err, data) {
-        if(err) throw err;
+
+      fs.writeFile("db/db.json", JSON.stringify(newNote), function (err, data) {
+        if (err) throw err;
       });
 
       res.json(newNote);
-    }));
+    });
   });
 
   //API DELETE Request
@@ -53,7 +54,7 @@ module.exports = function (app) {
   app.delete("/api/notes/:id", function (req, res) {
     let notes = [];
 
-    fs.readFile(path.join(__dirname, '/db/db.json', 'utf8', function (err, data) {
+    fs.readFile("db/db.json", function (err, data) {
       if (err) {
         throw err
       } else {
@@ -63,17 +64,18 @@ module.exports = function (app) {
           if (notes[i].id === parseInt(req.params.id)) {
             notes.splice(i, 1);
           }
-        }
+        };
 
-        fs.writeFile(path.join(__dirname, '/db/db.json', JSON.stringify(notes), function (err, data) {
+        fs.writeFile("db/db.json", JSON.stringify(notes), function (err, data) {
           if (err) {
             throw err
           } else {
             res.send(data)
           }
-        }))
-    }
-    }))
+        });
+      };
+    });
+
   });
 
 };

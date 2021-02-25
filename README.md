@@ -1,18 +1,21 @@
 # express-notetaker-
 
-**Description**
+## Description
+ Welcome to the Express Notetaker. This application can be used to write, save, and delete notes. 
 
-This application can be used to write, save, and delete notes. 
+## Technologies
+* Express
+* HTML/API Routing 
+* Postman
+* Robo3t
+* Boostrap
 
-**Installation** 
+## Screenshots 
+![Notes](/public/images/note_taker.png) 
 
-Clone this repository. 
-Run "npm install" in the command line. 
+Demo: https://drive.google.com/file/d/1x8j6QYtHNwm0V-ufVMZHQIqM16HHmHFG/view?usp=sharing
 
-Technologies
-Express.js , Routing, HTTP POST requests, Postman
-
-**Links**
+## Links
 
 Github: https://github.com/guaaur04/express-notetaker
 
