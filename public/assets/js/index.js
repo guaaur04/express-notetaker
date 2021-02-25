@@ -1,6 +1,4 @@
-$(document).ready(function () {
-
-  const $noteTitle = $(".note-title");
+ const $noteTitle = $(".note-title");
   const $noteText = $(".note-textarea");
   const $saveNoteBtn = $(".save-note");
   const $newNoteBtn = $(".new-note");
@@ -146,7 +144,8 @@ $(document).ready(function () {
   $noteList.on("click", ".delete-note", handleNoteDelete);
   $noteTitle.on("keyup", handleRenderSaveBtn);
   $noteText.on("keyup", handleRenderSaveBtn);
+  
   getAndRenderNotes();
 
-});
+
 

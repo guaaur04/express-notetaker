@@ -3,7 +3,7 @@
 // We are linking our routes to a series of data sources
 const fs = require("fs");
 // const express = require("express");
-const path = require("path")
+const path = require("path");
 // const router = express.Router()
 // const db = require("../db/db.json");
 // const uuidv4 = require('uuid');
@@ -12,28 +12,31 @@ const path = require("path")
 
 
 //ROUTING
-// API GET Request
+//GET
 module.exports = function (app) {
 
-  app.get("/api/notes", function (req, res) {
-    fs.readFile(path.join(_dirname, "/db/db.json", "utf8", function (err, data) {
-      if (err) {
-        console.log("No notes here 💜")
-        throw err
-      } else {
-        res.json(JSON.parse(data))
-      }
-    }));
+  app.get("/api/notes", (req, res) => {
+    fs.readFile("./db.json", function (err, data) {
+      if (err) throw err;
+      var newNoteId = 1;
+      const dataId = JSON.parse(data);
+      dataId.forEach((element) => {
+        element.id = newNoteId++;
+      });
+      fs.writeFile("./db.json", JSON.stringify(dataId), function (err, data) {
+        if (err) throw err;
+      });
+      res.json(dataId);
+    });
   });
-
-  //API POST Request
-  //Should receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client
+  
+  //POST
 
   app.post("/api/notes", function (req, res) {
 
     let notes = [];
 
-    fs.readFile(path.join(_dirname, "/db/db.json"), "utf8", function (err, data) {
+    fs.readFile(path.join(__dirname + "/db/db.json"), function (err, data) {
 
       if (err) {
         console.log("Woops, there's something wrong here...")
@@ -45,13 +48,14 @@ module.exports = function (app) {
 
       //Give me my notes, computer
       res.json(notes)
+    
 
 
       //Each note is to be different
       let noteId = notes.length > 0 ? notes[notes.length - 1].id + 1 : 0;
       notes.push({ id: noteId, title: req.body.title, text: req.body.text });
 
-      fs.readFile(path.join(_dirname, "/db/db.json"), JSON.stringify(notes), function (err, data) {
+      fs.readFile(path.join(__dirname, "/db/db.json"), JSON.stringify(notes), function (err, data) {
 
         if (err) {
           console.log("Woops, there's something wrong here...")
