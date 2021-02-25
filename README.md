@@ -19,7 +19,7 @@ Demo: https://drive.google.com/file/d/1x8j6QYtHNwm0V-ufVMZHQIqM16HHmHFG/view?usp
 
 Github: https://github.com/guaaur04/express-notetaker
 
-Deployed application:
+Deployed application: https://thawing-bayou-67724.herokuapp.com/
 
 **License**
 
