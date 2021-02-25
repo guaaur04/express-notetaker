@@ -16,10 +16,10 @@
   };
 
   // A function for saving a note to the db
-  const saveNote = (notes) => {
+  const saveNote = (note) => {
     return $.ajax({
       url: "/api/notes",
-      data: notes,
+      data: note,
       method: "POST",
     });
   };

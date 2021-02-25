@@ -4,7 +4,7 @@
 const fs = require("fs");
 // const express = require("express");
 const path = require("path");
-// const router = express.Router()
+
 // const db = require("../db/db.json");
 // const uuidv4 = require('uuid');
 // const { response } = require("express");
@@ -16,56 +16,36 @@ const path = require("path");
 module.exports = function (app) {
 
   app.get("/api/notes", (req, res) => {
-    fs.readFile("./db.json", function (err, data) {
+    fs.readFile("db/db.json",  function (err, data) {
       if (err) throw err;
       var newNoteId = 1;
       const dataId = JSON.parse(data);
       dataId.forEach((element) => {
         element.id = newNoteId++;
       });
-      fs.writeFile("./db.json", JSON.stringify(dataId), function (err, data) {
+
+      fs.writeFile("db/db.json", JSON.stringify(dataId), function (err, data) {
         if (err) throw err;
       });
       res.json(dataId);
-    });
+    })
   });
+
+
   
   //POST
 
-  app.post("/api/notes", function (req, res) {
+  app.post("/api/notes", (req, res) => {
+    fs.readFile(path.join(__dirname, '/db/db.json', function (err, data) {
+      if(err) throw err;
+      const newNote =JSON.parse(data);
+      newNote.push(req.body);
+      fs.writeFile('../db.json', JSON.stringify(newNote), function (err, data) {
+        if(err) throw err;
+      });
 
-    let notes = [];
-
-    fs.readFile(path.join(__dirname + "/db/db.json"), function (err, data) {
-
-      if (err) {
-        console.log("Woops, there's something wrong here...")
-        throw err
-      } else {
-
-        notes = JSON.parse(data)
-      }
-
-      //Give me my notes, computer
-      res.json(notes)
-    
-
-
-      //Each note is to be different
-      let noteId = notes.length > 0 ? notes[notes.length - 1].id + 1 : 0;
-      notes.push({ id: noteId, title: req.body.title, text: req.body.text });
-
-      fs.readFile(path.join(__dirname, "/db/db.json"), JSON.stringify(notes), function (err, data) {
-
-        if (err) {
-          console.log("Woops, there's something wrong here...")
-          throw err
-        } else {
-
-          res.json(data);
-        }
-      })
-    });
+      res.json(newNote);
+    }));
   });
 
   //API DELETE Request
